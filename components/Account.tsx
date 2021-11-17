@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
-import { Button, Text } from "@chakra-ui/react"
+import { Button, Text, Box} from "@chakra-ui/react"
 import { useEffect, useState } from "react";
 import { injected } from "../connectors";
 import useENSName from "../hooks/useENSName";
@@ -43,7 +43,7 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
 
   if (typeof account !== "string") {
     return (
-      <div>
+      <Box>
         {isWeb3Available ? (
           <Button
             bg="teal.300"
@@ -64,9 +64,9 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
             {isMetaMaskInstalled ? "Connect to MetaMask" : "Connect to Wallet"}
           </Button>
         ) : (
-          <Button onClick={startOnboarding}>Install Metamask</Button>
+          <Button bg="teal.300" onClick={startOnboarding}>Install Metamask</Button>
         )}
-      </div>
+      </Box>
     );
   }
 
@@ -78,7 +78,7 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
         rel: "noopener noreferrer",
       }}
     >
-      <Text fontSize="md">{ENSName || `${shortenHex(account, 4)}`}</Text>
+      <Text fontWeight="bold" fontSize="md"p="2">{ENSName || `${shortenHex(account, 4)}`}</Text>
     </a>
   );
 };
