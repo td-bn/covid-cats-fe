@@ -1,5 +1,7 @@
 import type { BigNumberish } from "@ethersproject/bignumber";
-import { formatUnits } from "@ethersproject/units";
+import { Contract, providers, utils as ethersUtils } from "ethers";
+import { Export } from "hardhat-deploy/types";
+import deployments from "./deployments/deployments.json";
 
 export function shortenHex(hex: string, length = 4) {
   return `${hex.substring(0, length + 2)}…${hex.substring(
@@ -7,12 +9,28 @@ export function shortenHex(hex: string, length = 4) {
   )}`;
 }
 
+const formatUnits = ethersUtils.formatUnits;
+
+type MultiExport = {
+  [chainId: string]: {[name: string]: Export};
+};
+
+const deploys: MultiExport = deployments;
+
 const ETHERSCAN_PREFIXES = {
   1: "",
   3: "ropsten.",
   4: "rinkeby.",
   5: "goerli.",
   42: "kovan.",
+};
+
+const CHAIN_PREFIXES = {
+  1: "",
+  3: "ropsten",
+  4: "rinkeby",
+  5: "goerli",
+  42: "kovan",
 };
 
 export function formatEtherscanLink(
@@ -36,3 +54,11 @@ export const parseBalance = (
   decimals = 18,
   decimalsToDisplay = 3
 ) => parseFloat(formatUnits(value, decimals)).toFixed(decimalsToDisplay);
+
+export const getContract = (chainId: any, library: providers.Provider, address: any, contractName: string)  => {
+  // Default to Rinkeby
+  const chain = chainId ? chainId.toString() : '4';
+  const name = CHAIN_PREFIXES[chain];
+  const contract = deploys[chain][name].contracts[contractName];
+  return new Contract(contract.address, contract.abi, library);
+}

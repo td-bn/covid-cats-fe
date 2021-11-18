@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 
 function Mission(): ReactElement {
   return (
-    <Box id="mission" _focus={{bg: "white"}}>
+    <Box id="mission" >
       <Heading as="h2" size="xl">Mission</Heading>
       <Flex>
         <Spacer maxW="15%" />
