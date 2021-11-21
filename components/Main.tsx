@@ -17,9 +17,6 @@ function Main(): ReactElement {
       <Box minH="200px" bg="yellow.100" border="2px">
         <Mission />
       </Box>
-      <Box minH="200px" bg="purple.100" border="2px">
-        <Mint />
-      </Box>
       <Box minH="200px" bg="pink.100" id="cats" border="2px">
         <Heading as="h2" size="xl">My Cats</Heading>
       </Box>
