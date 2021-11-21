@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { Container, VStack, Box, StackDivider, Heading } from "@chakra-ui/react"
 import Mission from './Mission'
 import Mint from './Mint'
+import Mint2 from './Mint2'
 
 function Main(): ReactElement {
   return (
@@ -10,6 +11,9 @@ function Main(): ReactElement {
       align="stretch"
       my="20"
     >
+      <Box minH="300px" bg="white.100" mt="40px" mb="50px">
+        <Mint2 />
+      </Box> 
       <Box minH="200px" bg="yellow.100" border="2px">
         <Mission />
       </Box>
