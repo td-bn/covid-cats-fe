@@ -1,5 +1,6 @@
 import type { BigNumberish } from "@ethersproject/bignumber";
 import { Contract, providers, utils as ethersUtils } from "ethers";
+// @ts-ignore
 import { Export } from "hardhat-deploy/types";
 import deployments from "./deployments/deployments.json";
 
