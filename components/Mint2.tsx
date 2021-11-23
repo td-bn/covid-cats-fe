@@ -4,11 +4,15 @@ import { useWeb3React } from '@web3-react/core';
 import { getContract } from '../util';
 
 function Mint2(): ReactElement {
-  
+  const [amountToMint, setAmountToMint] = useState(0)
 
   const {library, active, account, chainId} = useWeb3React();
   const [failed, setFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handleMint = async(e) => {
+    await mintNFT(amountToMint)
+  }
   
   const mintNFT = async(num: number) => {
     if (!active) {
@@ -44,15 +48,19 @@ function Mint2(): ReactElement {
             <Text fontSize="2xl" fontWeight="bold">0/10000 CovidCats left at 0.1 ETH each</Text>
             {/* TO-DO connect "0/10000" and "0.1" number to view functions on CovidCats smart contract */}
             <br/>
-            <Select maxWidth="25vw" borderColor="gray.400" variant="outline" placeholder="Select number to mint">
-              <option value="option1">1</option>
-              <option value="option2">2</option>
-              <option value="option3">3</option>
-              <option value="option3">4</option>
-              <option value="option3">5</option>
+            <Select 
+              value={amountToMint} 
+              onChange={(e) => setAmountToMint(Number(e.target.value))}
+              maxWidth="25vw" borderColor="gray.400" variant="outline" placeholder="Select number to mint"
+              >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
             </Select>
             <br/>
-            <Button colorScheme="blue" onClick={async () => {await mintNFT(1)}}>Mint</Button>
+            <Button colorScheme="blue" onClick={handleMint}>Mint</Button>
 
             <Box mt="10" minW="35vw">
               {
@@ -71,3 +79,4 @@ function Mint2(): ReactElement {
 }
 
 export default Mint2
+

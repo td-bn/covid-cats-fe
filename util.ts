@@ -1,7 +1,7 @@
 import type { BigNumberish } from "@ethersproject/bignumber";
 import { Contract, providers, utils as ethersUtils } from "ethers";
-// import { Export } from "@typechain/hardhat"
-// import { Export } from "hardhat-deploy/types";
+// import { Export } from "hardhat-deploy/types"; // Had to comment out this line or else got error in Vercel deployment
+// "Type error: Cannot find module 'hardhat/types' or its corresponding type declarations."
 import deployments from "./deployments/deployments.json";
 
 interface ContractExport {

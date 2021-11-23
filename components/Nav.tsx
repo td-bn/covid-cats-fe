@@ -20,10 +20,10 @@ function Nav(): ReactElement {
   const triedToEagerConnect = useEagerConnect()
 
   return (
-    <Flex mt="10" >
-      <Box w="10"></Box>
-      <Spacer />
-      <HStack ml="10" mr="5" boxShadow={`5px 5px 5px ${black}, 0 0 8px ${blue200}`} bg="white" spacing="2px">
+    <Flex mt="10" alignItem="center" justifyContent="space-between">
+      <Box minW="200px" fontWeight="bold">CovidCats</Box>
+
+      <HStack boxShadow={`5px 5px 5px ${black}, 0 0 8px ${blue200}`} bg="white" spacing="2px">
         {
           links.map( (link, i) => (
             <Box 
@@ -40,8 +40,8 @@ function Nav(): ReactElement {
           ))
         }
       </HStack>
-      <Spacer />
-      <Account triedToEagerConnect={triedToEagerConnect} />
+
+      <Flex minW="200px"><Account triedToEagerConnect={triedToEagerConnect} /></Flex>
     </Flex>
   )
 }
