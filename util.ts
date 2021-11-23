@@ -1,8 +1,20 @@
 import type { BigNumberish } from "@ethersproject/bignumber";
 import { Contract, providers, utils as ethersUtils } from "ethers";
-// @ts-ignore
-import { Export } from "hardhat-deploy/types";
+// import { Export } from "@typechain/hardhat"
+// import { Export } from "hardhat-deploy/types";
 import deployments from "./deployments/deployments.json";
+
+interface ContractExport {
+  address: string;
+  abi: any[];
+  linkedData?: any;
+}
+
+interface Export {
+  chainId: string;
+  name: string;
+  contracts: {[name: string]: ContractExport};
+}
 
 export function shortenHex(hex: string, length = 4) {
   return `${hex.substring(0, length + 2)}…${hex.substring(
