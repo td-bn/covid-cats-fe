@@ -1,18 +1,26 @@
 import { Box, Flex, Select, Text, Image, Button, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from '@chakra-ui/react'
-import { ethers } from "ethers"
-import React, { ReactElement, useState } from 'react'
+import { ContractFactory, ethers } from "ethers"
+import React, { ReactElement, useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core';
 import { getContract } from '../util';
 
 function Mint2(): ReactElement {
-  // const [amountToMint, setAmountToMint] = useState(0)
 
-  const {library, active, account, chainId} = useWeb3React();
   const [failed, setFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isMinting, setIsMinting] = useState(false);
+  const [numberAvailableToMint, setNumberAvailableToMint] = useState(10000);
 
+  const {library, active, account, chainId} = useWeb3React();
   const contract = getContract(chainId, library, account, "CovidCats");
+
+  // Hook to enable frontend to fetch remainingSupply from CovidCats.sol
+  useEffect(() => {
+    (async() => {
+      const remainingSupply = await contract.remainingSupply()
+      setNumberAvailableToMint(Number(remainingSupply));
+    })();
+  })
 
   const handleMint = async() => {
     await mintNFT()
@@ -51,7 +59,7 @@ function Mint2(): ReactElement {
             <Image border = "2px black solid" maxHeight= "100%" width = "384px" src="cat_0.png" alt="CovidCat" /> 
         </Flex>
         <Flex flexDirection = "column" alignItems="center">
-            <Text fontSize="2xl" fontWeight="bold">0/10000 CovidCats left at 0.1 ETH each</Text>
+            <Text fontSize="2xl" fontWeight="bold">{numberAvailableToMint}/10000 CovidCats left at 0.1 ETH each</Text>
             {/* TO-DO connect "0/10000" and "0.1" number to view functions on CovidCats smart contract */}
             {/* <br/> */}
             {/* <Select 
