@@ -78,7 +78,7 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
         rel: "noopener noreferrer",
       }}
     >
-      <Text fontWeight="bold" fontSize="md"p="2">{ENSName || `${shortenHex(account, 4)}`}</Text>
+      <Text fontWeight="bold" fontSize="md" p="12px 25px" borderRadius="25px" border="1px lightgray solid" _hover={{borderColor:"black"}}>{ENSName || `${shortenHex(account, 4)}`}</Text>
     </a>
   );
 };

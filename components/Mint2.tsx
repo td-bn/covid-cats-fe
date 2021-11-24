@@ -1,32 +1,37 @@
 import { Box, Flex, Select, Text, Image, Button, Alert, AlertIcon, AlertTitle, AlertDescription, CloseButton } from '@chakra-ui/react'
+import { ethers } from "ethers"
 import React, { ReactElement, useState } from 'react'
 import { useWeb3React } from '@web3-react/core';
 import { getContract } from '../util';
 
 function Mint2(): ReactElement {
-  const [amountToMint, setAmountToMint] = useState(0)
+  // const [amountToMint, setAmountToMint] = useState(0)
 
   const {library, active, account, chainId} = useWeb3React();
   const [failed, setFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isMinting, setIsMinting] = useState(false);
 
-  const handleMint = async(e) => {
-    await mintNFT(amountToMint)
+  const contract = getContract(chainId, library, account, "CovidCats");
+
+  const handleMint = async() => {
+    await mintNFT()
   }
   
-  const mintNFT = async(num: number) => {
+  const mintNFT = async() => {
     if (!active) {
       setErrorMessage("Not connected to MetaMask");
       setFailed(true);
       return;
     }
 
-    const contract = getContract(chainId, library, account, "CovidCats");
+    setIsMinting(true);
 
     try {
       const signer = library.getSigner();
-      const tx = await contract.connect(signer).claim();
+      const tx = await contract.connect(signer).claim({value: ethers.utils.parseEther("0.1")});
       await tx.wait();
+      setIsMinting(false);
       alert("Transaction Successful, you should see NFT assigned to you in a while");
     } catch(err) {
       if ('error' in err) {
@@ -35,6 +40,7 @@ function Mint2(): ReactElement {
         setErrorMessage("See browser console for more details");
       }
       console.log(err);
+      setIsMinting(false);
       setFailed(true);
     }
   };
@@ -47,8 +53,8 @@ function Mint2(): ReactElement {
         <Flex flexDirection = "column" alignItems="center">
             <Text fontSize="2xl" fontWeight="bold">0/10000 CovidCats left at 0.1 ETH each</Text>
             {/* TO-DO connect "0/10000" and "0.1" number to view functions on CovidCats smart contract */}
-            <br/>
-            <Select 
+            {/* <br/> */}
+            {/* <Select 
               value={amountToMint} 
               onChange={(e) => setAmountToMint(Number(e.target.value))}
               maxWidth="25vw" borderColor="gray.400" variant="outline" placeholder="Select number to mint"
@@ -58,17 +64,17 @@ function Mint2(): ReactElement {
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
-            </Select>
+            </Select> */}
             <br/>
-            <Button colorScheme="blue" onClick={handleMint}>Mint</Button>
+            <Button colorScheme="blue" isLoading={isMinting} onClick={handleMint}>Mint</Button>
 
-            <Box mt="10" minW="35vw">
+            <Box mt="8" maxW="60vw">
               {
                 failed && 
                 <Alert status="error">
                   <AlertIcon />
                   <AlertTitle mr={2}>Transaction Failed</AlertTitle>
-                  <AlertDescription>{errorMessage}</AlertDescription>
+                  <AlertDescription mr={5}>{errorMessage}</AlertDescription>
                   <CloseButton position="absolute" right="8px" top="8px" onClick={ () => setFailed(false)}/>
                 </Alert>
               }

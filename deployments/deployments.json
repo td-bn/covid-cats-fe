@@ -5,7 +5,7 @@
       "chainId": "4",
       "contracts": {
         "CovidCats": {
-          "address": "0xC38D8C45Dd7B063EBC5217a92c6455d60aCFE76F",
+          "address": "0x819E1F4bABe8be7281b9f34A9ec495c0A95D975c",
           "abi": [
             {
               "inputs": [

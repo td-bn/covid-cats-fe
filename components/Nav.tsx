@@ -6,7 +6,6 @@ import Account from './Account';
 // [LinkName, HTML_ID]
 const links = [
   ["Mission", "mission"],
-  ["Mint", "mint"],
   ["My Cats", "cats"],
   ["Charities", "charities"],
   ["DAO", "dao"],
@@ -21,7 +20,7 @@ function Nav(): ReactElement {
 
   return (
     <Flex mt="10" alignItem="center" justifyContent="space-between">
-      <Box minW="200px" fontWeight="bold">CovidCats</Box>
+      <Flex justifyContent="left" alignItems="center" minW="200px" fontWeight="bold"><Link href="/" _hover={{color:"gray.400"}} fontSize="1.4rem">CovidCats</Link></Flex>
 
       <HStack boxShadow={`5px 5px 5px ${black}, 0 0 8px ${blue200}`} bg="white" spacing="2px">
         {
