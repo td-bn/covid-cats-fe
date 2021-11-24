@@ -17,8 +17,12 @@ function Mint2(): ReactElement {
   // Hook to enable frontend to fetch remainingSupply from CovidCats.sol
   useEffect(() => {
     (async() => {
-      const remainingSupply = await contract.remainingSupply()
-      setNumberAvailableToMint(Number(remainingSupply));
+      try {
+        const remainingSupply = await contract.remainingSupply()
+        setNumberAvailableToMint(Number(remainingSupply));
+      } catch (err) {
+        console.log(err)
+      }
     })();
   })
 
