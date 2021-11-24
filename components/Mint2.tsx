@@ -12,7 +12,7 @@ function Mint2(): ReactElement {
   const [numberAvailableToMint, setNumberAvailableToMint] = useState(10000);
 
   const {library, active, account, chainId} = useWeb3React();
-  const contract = getContract(chainId, library, account, "CovidCats");
+  const contract = chainId === 4 ? getContract(chainId, library, account, "CovidCats") : null
 
   // Hook to enable frontend to fetch remainingSupply from CovidCats.sol
   useEffect(() => {
@@ -63,7 +63,8 @@ function Mint2(): ReactElement {
             <Image border = "2px black solid" maxHeight= "100%" width = "384px" src="cat_0.png" alt="CovidCat" /> 
         </Flex>
         <Flex flexDirection = "column" alignItems="center">
-            <Text fontSize="2xl" fontWeight="bold">{numberAvailableToMint}/10000 CovidCats left at 0.1 ETH each</Text>
+            {chainId === 4 && <Text fontSize="2xl" fontWeight="bold">{numberAvailableToMint}/10000 CovidCats left at 0.1 ETH each</Text>}
+            {chainId !== 4 && <Text fontSize="2xl" fontWeight="bold" color="red" textTransform="uppercase">Please switch to Rinkeby network</Text>}
             {/* TO-DO connect "0/10000" and "0.1" number to view functions on CovidCats smart contract */}
             {/* <br/> */}
             {/* <Select 
