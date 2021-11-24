@@ -24,6 +24,7 @@ function Main(): ReactElement {
       </Box>
       <Box p={3} minH="200px" bg="green.100" id="charities" border="2px">
         <Heading as="h2" size="xl">Charities</Heading>
+        <Text>ASH</Text>
       </Box>
       <Box p={3} minH="200px" bg="orange.100" id="dao" border="2px">
         <Heading as="h2" size="xl">DAO</Heading>
