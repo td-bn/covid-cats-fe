@@ -152,7 +152,7 @@ function elementsSetup (layer_0: string, layer_1: string, layer_2: string, layer
     if (!layer_5_file_names.includes(layer_5)) {throw "Provided layer 5 trait doesn't exist"}
 
     // Map each layer into the selected trait image object to be rendered
-    const imageArray = layersSetup(layersOrder).map((layer, index) => {
+    const imageArray = layersSetup(layersOrder).map(function (layer, index) {
         
         // Loop through each element in the layer, and pick the one that is selected
         let selectedIndex: number;
