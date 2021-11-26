@@ -89,7 +89,7 @@ function Mint2({data}): ReactElement {
               <Container fontSize="1.1rem" textAlign="center">
                   <Text>NFT claimed! Generating image...</Text>
                   <Text>Be patient. Will take 3-5 minutes</Text>
-                  <Text>Please don't close the page until you have the metadata</Text>
+                  <Text>Please don&#39;t close the page until you have the metadata</Text>
                   <br/>
                   <Progress size="lg" isIndeterminate />
               </Container>
