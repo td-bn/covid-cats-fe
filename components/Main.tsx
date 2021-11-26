@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react'
-import { Container, VStack, Box, StackDivider, Heading, Text } from "@chakra-ui/react"
+import { Container, VStack, Box, Heading, Text } from "@chakra-ui/react"
 import Mission from './Mission'
 import Mint from './Mint'
 import Mint2 from './Mint2'
 
-function Main(): ReactElement {
+function Main({data}): ReactElement {
   return (
     <VStack
       spacing={4}
@@ -12,7 +12,7 @@ function Main(): ReactElement {
       my="20"
     >
       <Box minH="300px" bg="white.100" mt="40px" mb="50px">
-        <Mint2 />
+        <Mint2 data={data}/>
       </Box> 
       <Box p={3} minH="200px" bg="yellow.100" border="2px">
         <Mission />

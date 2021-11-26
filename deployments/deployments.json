@@ -5,7 +5,7 @@
       "chainId": "4",
       "contracts": {
         "CovidCats": {
-          "address": "0x819E1F4bABe8be7281b9f34A9ec495c0A95D975c",
+          "address": "0xaAb3c4d32BA924c61A8Ce2ca12164CD1A7520c46",
           "abi": [
             {
               "inputs": [
@@ -95,9 +95,9 @@
                 },
                 {
                   "indexed": false,
-                  "internalType": "uint256[6]",
+                  "internalType": "uint256[7]",
                   "name": "random_numbers",
-                  "type": "uint256[6]"
+                  "type": "uint256[7]"
                 }
               ],
               "name": "Mint",

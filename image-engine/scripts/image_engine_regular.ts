@@ -29,7 +29,7 @@ interface Layer {
 }
 
 const basePath = process.cwd();
-const layersDir = `${basePath}/layers_regular`;
+const layersDir = `${basePath}/image-engine/layers_regular`;
 
 const canvas = createCanvas(2048, 2048)
 const ctx = canvas.getContext('2d')

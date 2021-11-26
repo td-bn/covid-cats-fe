@@ -4,9 +4,8 @@ import Head from "next/head";
 import Nav from '../components/Nav';
 import Main from "../components/Main";
 
-const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f";
-
 function Home() {
+  
 
   return (
     <div>
@@ -22,7 +21,7 @@ function Home() {
         </header>
 
       <main>
-        <Main />
+        <Main data={null}/>
       </main>
       </Container>
 

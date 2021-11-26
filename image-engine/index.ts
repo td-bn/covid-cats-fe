@@ -1,7 +1,7 @@
 // Before using this script, need to sync Moralis server to the smart contract and Mint event
 
 require("dotenv").config();
-import fs from "fs";
+import * as fs from 'fs';
 const Moralis  = require('moralis/node');
 const { createImage_delta } = require('./scripts/image_engine_delta')
 const { createImage_regular } = require('./scripts/image_engine_regular')
@@ -16,11 +16,16 @@ const masterKey = process.env.MASTER_KEY;
 // keccak256 hash of "Mint(address,uint256,uint256[7])"
 const TOPIC = "0xc259216ea5a43a79dbc484bc761e3b8148023dec190ade5b1d181d2cb82da449";
 
-const main = async () => {
+export const image_engine_main = async () => {
+    return new Promise(async (res, rej) => {
     // Get address from Hardhat deployment data
     const deploymentData = await fs.readFileSync("./deployments/CovidCats.json");
     const parsed_deploymentData = JSON.parse(deploymentData.toString())
     const _address = parsed_deploymentData.address
+    
+    // Using hardcoded address here, because stuck on following error with Next.js app
+    // Module not found: Can't resolve 'fs'
+    // const _address = "0xaAb3c4d32BA924c61A8Ce2ca12164CD1A7520c46"
     
     // Start Moralis server
     Moralis.start({ serverUrl, appId, masterKey });
@@ -67,17 +72,29 @@ const main = async () => {
             const image_ipfs_link = await createImage_delta(traits[0], traits[1], traits[2], traits[3], traits[4], traits[5])
             const metadata_link = await get_metadata_ipfs(object._objCount, traits, image_ipfs_link)
             console.log(metadata_link)
+
+            const ipfs_data = [JSON.parse(JSON.stringify(image_ipfs_link)), JSON.parse(JSON.stringify(metadata_link)), object._objCount]
+            res(ipfs_data)
         } else {
             // Create image IPFS link for Regular variant
             const traits = get_random_traits_regular(random_numbers)
             const image_ipfs_link = await createImage_regular(traits[0], traits[1], traits[2], traits[3], traits[4], traits[5])
             const metadata_link = await get_metadata_ipfs(object._objCount, traits, image_ipfs_link)
             console.log(metadata_link)
+            // res(JSON.parse(JSON.stringify(metadata_link)))
+
+            const ipfs_data = [JSON.parse(JSON.stringify(image_ipfs_link)), JSON.parse(JSON.stringify(metadata_link)), object._objCount]
+            res(ipfs_data)
         }
 
         // Get metadata IPFS link, and update tokenURI
         // Give this to the user on the frontend, to update the metadata
-    });    
+    });   
+
+
+    })
+
+ 
 }
 
 async function get_metadata_ipfs(id:number, object:any, image_link:string) {
@@ -123,10 +140,10 @@ async function get_metadata_ipfs(id:number, object:any, image_link:string) {
         return tokenURI
 }
 
-main().catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-  });
+// main().catch((error) => {
+//     console.error(error);
+//     process.exitCode = 1;
+//   });
 
 // ABI to paste into Moralis Sync event
 // {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"_minter","type":"address"},{"indexed":true,"internalType":"uint256","name":"_tokenID","type":"uint256"},{"indexed":false,"internalType":"uint256[7]","name":"random_numbers","type":"uint256[7]"}],"name":"Mint","type":"event"}
