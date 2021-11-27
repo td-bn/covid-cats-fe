@@ -32,14 +32,14 @@
     "next": "12.0.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "swr": "^1.0.1"
+    "swr": "^1.0.1",
+    "ethers": "^5.5.1"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^8.0.1",
     "@types/react": "^17.0.34",
     "eslint": "7.32.0",
     "eslint-config-next": "12.0.2",
-    "ethers": "^5.5.1",
     "hardhat-deploy": "^0.9.8",
     "typechain": "^6.0.2",
     "typescript": "^4.4.4"
