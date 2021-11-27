@@ -97,6 +97,17 @@ async function loadLayerImg (_layer: { selectedElement: { path: string; } | unde
 // Returns array to put into image engine
 function elementsSetup (layer_0: string, layer_1: string, layer_2: string, layer_3: string, layer_4: string, layer_5: string) {
     
+    // Create array capturing arguments given
+    // Need this because where we want to use argument_array, the arguments array will mutate as it is inside another function block
+    const argument_array = [];
+
+    let i = 0;
+
+    while(arguments[i]) {
+        argument_array.push(arguments[i])
+        i++;
+    }
+
     // Input validation - all inputs must be existing files or else the code throws an error
     const layer_0_file_names:string[] = [];
     const layer_1_file_names:string[] = [];
@@ -156,7 +167,7 @@ function elementsSetup (layer_0: string, layer_1: string, layer_2: string, layer
         let selectedIndex: number;
 
         for (let element of layer.elements) {
-            if (element.name == arguments[index]) {
+            if (element.name == argument_array[index]) {
                 selectedIndex = element.id
             }
         }

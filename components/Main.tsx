@@ -4,7 +4,7 @@ import Mission from './Mission'
 import Mint from './Mint'
 import Mint2 from './Mint2'
 
-function Main({data}): ReactElement {
+function Main(): ReactElement {
   return (
     <VStack
       spacing={4}
@@ -12,23 +12,22 @@ function Main({data}): ReactElement {
       my="20"
     >
       <Box minH="300px" bg="white.100" mt="40px" mb="50px">
-        <Mint2 data={data}/>
+        <Mint2/>
       </Box> 
       <Box p={3} minH="200px" bg="yellow.100" border="2px">
         <Mission />
       </Box>
-      <Box p={3} minH="200px" bg="pink.100" id="cats" border="2px">
+      {/* <Box p={3} minH="200px" bg="pink.100" id="cats" border="2px">
         <Heading as="h2" size="xl">My Cats</Heading>
         <br/>
         <Text>Integrated with the Chainlink VRF function to generate provably random traits</Text>
       </Box>
       <Box p={3} minH="200px" bg="green.100" id="charities" border="2px">
         <Heading as="h2" size="xl">Charities</Heading>
-        <Text>ASH</Text>
       </Box>
       <Box p={3} minH="200px" bg="orange.100" id="dao" border="2px">
         <Heading as="h2" size="xl">DAO</Heading>
-      </Box>
+      </Box> */}
     </VStack>
   )
 }

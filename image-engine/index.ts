@@ -18,6 +18,7 @@ const TOPIC = "0xc259216ea5a43a79dbc484bc761e3b8148023dec190ade5b1d181d2cb82da44
 
 export const image_engine_main = async () => {
     return new Promise(async (res, rej) => {
+
     // Get address from Hardhat deployment data
     const deploymentData = await fs.readFileSync("./deployments/CovidCats.json");
     const parsed_deploymentData = JSON.parse(deploymentData.toString())

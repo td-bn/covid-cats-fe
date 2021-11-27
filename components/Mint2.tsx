@@ -4,14 +4,20 @@ import React, { ReactElement, useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core';
 import { getContract } from '../util';
 import { useRouter } from 'next/router';
+const axios = require("axios")
 
-function Mint2({data}): ReactElement {
+function Mint2(): ReactElement {
 
   const [failed, setFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isMinting, setIsMinting] = useState(false);
   const [numberAvailableToMint, setNumberAvailableToMint] = useState(10000);
   const [awaitingMetadata, setAwaitingMetadata] = useState(false)
+  const [gotMetadata, setGotMetadata] = useState(false)
+  const [mintingDisabled, setMintingDisabled] = useState(false)
+  const [imageLink, setImageLink] = useState("")
+  const [metadataLink, setMetadataLink] = useState("")
+  const [tokenID, setTokenID] = useState(1)
 
   const router = useRouter();
   const {library, active, account, chainId} = useWeb3React();
@@ -48,8 +54,9 @@ function Mint2({data}): ReactElement {
       await tx.wait();
       alert("Transaction success, please don't close the screen until you have your NFT image");
       setIsMinting(false)
+      setMintingDisabled(true)
       setAwaitingMetadata(true)
-      router.push('/minting')
+      await turnOnMoralisEventListener()
     } catch(err) {
       if ('error' in err) {
         setErrorMessage(err.error.message);
@@ -62,10 +69,32 @@ function Mint2({data}): ReactElement {
     }
   };
 
-  const handleSetURI = async(_tokenURI:string) => {
+  const turnOnMoralisEventListener = async() => {
+
+    try {
+      const res = await axios.post("/api")
+      setGotMetadata(true)
+      setImageLink(res.data[0])
+      setMetadataLink(res.data[1])
+      setTokenID(res.data[2])
+      setAwaitingMetadata(false)
+    } catch (e) { 
+      console.log(e)
+    }
+  }
+
+  const handleSetURI = async() => {
+
+    if (!active) {
+      setErrorMessage("Not connected to MetaMask");
+      setFailed(true);
+      return;
+    }
+  
     try {
       const signer = library.getSigner();
-      const tx = await contract.connect(signer).claim({value: ethers.utils.parseEther("0.1")});
+      // const tx = await contract.connect(signer)._setTokenURI(tokenID, metadataLink);
+      const tx = await contract.connect(signer)._setTokenURI(tokenID, metadataLink);
       await tx.wait();
     } catch (err) {
       console.log(err)
@@ -81,8 +110,9 @@ function Mint2({data}): ReactElement {
             {chainId === 4 && <Text fontSize="2xl" fontWeight="bold">{numberAvailableToMint}/10000 CovidCats left at 0.1 ETH each</Text>}
             {chainId !== 4 && <Text fontSize="2xl" fontWeight="bold" color="red" textTransform="uppercase">Please switch to Rinkeby network</Text>}
             <br/>
-            <Button colorScheme="blue" isLoading={isMinting} onClick={handleMint}>Mint</Button>
+            <Button colorScheme="blue" isLoading={isMinting} isDisabled={mintingDisabled} onClick={handleMint}>Mint</Button>
             <br/>
+            {/* <Button colorScheme="blue" onClick={turnOnMoralisEventListener}>Test</Button> */}
 
             {
               awaitingMetadata &&
@@ -95,16 +125,18 @@ function Mint2({data}): ReactElement {
               </Container>
             }
 
-            {data &&
+            {gotMetadata &&
               <Flex mt={10} flexDirection = "column" alignItems="center">
                 <Text fontSize="2.3rem" fontWeight="700">CONGRATULATIONS 🥳</Text>
                 <Box boxSize="sm">
-                  <Image src={data[0]} alt={data[0]} />
+                  <Image src={imageLink} alt={imageLink} />
                 </Box>
-                <Text>{data[1]}</Text>
-                {/* <Button colorScheme="blue" onClick={handleSetURI}>Set onchain metadata</Button> */}
+                <Text>{metadataLink}</Text>
+                {/* {<Button colorScheme="blue" onClick={handleSetURI}>Set onchain metadata</Button>} */}
               </Flex> 
             }
+
+            {/* {<Button colorScheme="blue" onClick={handleSetURI}>Set onchain metadata</Button>} */}
 
             <Box mt="8" maxW="60vw">
               {

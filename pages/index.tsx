@@ -14,14 +14,13 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* <Container bg="teal.100" minW="720px" maxW="90%" marginTop="3" > */}
       <Container minW="720px" maxW="90%" marginTop="3" >
         <header >
           <Nav />
         </header>
 
       <main>
-        <Main data={null}/>
+        <Main/>
       </main>
       </Container>
 
