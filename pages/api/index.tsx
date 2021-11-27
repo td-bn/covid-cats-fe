@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 const { image_engine_test } = require('../../image-engine/test')
 const { image_engine_main } = require('../../image-engine/index')
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function (req: NextApiRequest, res: NextApiResponse) {
   
     try {
       const metadata_link = await image_engine_main()
