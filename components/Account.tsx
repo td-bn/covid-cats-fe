@@ -47,6 +47,7 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
         {isWeb3Available ? (
           <Button
             bg="teal.300"
+            borderRadius="25px"
             disabled={connecting}
             onClick={() => {
               setConnecting(true);
@@ -70,6 +71,7 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
     );
   }
 
+  // TODO - DISPLAYING THE ACCOUNT BUTTON FOR CHAINS ON WHICH "const { account } = useWeb3React();" is undefined
   return (
     <a
       {...{
@@ -78,9 +80,10 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
         rel: "noopener noreferrer",
       }}
     >
-      <Text fontWeight="bold" fontSize="md"p="2">{ENSName || `${shortenHex(account, 4)}`}</Text>
+      <Text fontWeight="bold" fontSize="md" p="12px 25px" borderRadius="25px" border="1px lightgray solid" _hover={{borderColor:"black"}}>{ENSName || `${shortenHex(account, 4)}`}</Text>
     </a>
   );
+
 };
 
 export default Account;

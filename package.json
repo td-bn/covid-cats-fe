@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "next lint",
     "compile-contract-types": "typechain --target ethers-v5 --out-dir './contracts/types' './contracts/*.json'",
     "postinstall": "yarn compile-contract-types"
@@ -21,20 +21,25 @@
     "@ethersproject/wallet": "^5.5.0",
     "@metamask/detect-provider": "^1.2.0",
     "@metamask/onboarding": "^1.0.1",
+    "@typechain/hardhat": "^3.0.0",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
+    "axios": "^0.24.0",
+    "canvas": "^2.8.0",
+    "dotenv": "^10.0.0",
     "framer-motion": "^4",
+    "moralis": "^0.0.135",
     "next": "12.0.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "swr": "^1.0.1"
+    "swr": "^1.0.1",
+    "ethers": "^5.5.1"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^8.0.1",
     "@types/react": "^17.0.34",
     "eslint": "7.32.0",
     "eslint-config-next": "12.0.2",
-    "ethers": "^5.5.1",
     "hardhat-deploy": "^0.9.8",
     "typechain": "^6.0.2",
     "typescript": "^4.4.4"

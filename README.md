@@ -1,3 +1,10 @@
+## Public frontend
+
+Vercel app not working! Vercel URL will be old frontend. Vercel deployment gives error of having a serverless function >= 50MB
+
+Frontend currently on https://covidcats-draft.herokuapp.com/
+
+
 ## Getting Started
 
 First, run the development server:
