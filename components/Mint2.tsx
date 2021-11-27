@@ -3,7 +3,7 @@ import { ContractFactory, ethers } from "ethers"
 import React, { ReactElement, useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core';
 import { getContract } from '../util';
-import { useRouter } from 'next/router';
+import { abi } from '../util/abi'
 const axios = require("axios")
 
 function Mint2(): ReactElement {
@@ -19,7 +19,6 @@ function Mint2(): ReactElement {
   const [metadataLink, setMetadataLink] = useState("")
   const [tokenID, setTokenID] = useState(1)
 
-  const router = useRouter();
   const {library, active, account, chainId} = useWeb3React();
   const contract = chainId === 4 ? getContract(chainId, library, account, "CovidCats") : null
 
@@ -56,7 +55,9 @@ function Mint2(): ReactElement {
       setIsMinting(false)
       setMintingDisabled(true)
       setAwaitingMetadata(true)
-      await turnOnMoralisEventListener()
+      // await turnOnMoralisEventListener()
+      await getMintEvent_ethers_js()
+      // Turn on ethers.js event listener, perform same action on events in turnOnMoralisEventListener()
     } catch(err) {
       if ('error' in err) {
         setErrorMessage(err.error.message);
@@ -83,23 +84,66 @@ function Mint2(): ReactElement {
     }
   }
 
-  const handleSetURI = async() => {
+  // Wrote this Mint event listener that doesn't call the Next.js API route until we have the random numbers
+  // Once we have the random numbers, it should be less than 3s to get the metadata link
+  // Heroku doesn't allow us more than 30s to get the response, and it is going to take >30s to Mint and then get the event listener
+  async function getMintEvent_ethers_js() {
+    const covidcats_contract = new ethers.Contract(contract.address, abi, library);
+    
+    console.log("LISTENING FOR MINT EVENT")
+    covidcats_contract.once("Mint", async (_minter: string, _tokenID: any) => {
+      const id = _tokenID.toNumber();
+      const random_numbers = await findMintEvent(id)
+      console.log(random_numbers)
 
-    if (!active) {
-      setErrorMessage("Not connected to MetaMask");
-      setFailed(true);
-      return;
-    }
+      const decoded_random_numbers = random_numbers.map(element => Number(element))
+
+      console.log("SENDING API REQUEST")
+      const res = await axios.post("/api", {random_number_array: decoded_random_numbers})
+      setGotMetadata(true)
+      setImageLink(res.data[0])
+      setMetadataLink(res.data[1])
+      setTokenID(res.data[2])
+      setAwaitingMetadata(false)
+    })
+  }
+
+  // For any tokenID, find the corresponding Mint event and get trait data from event log data
+  async function findMintEvent(_tokenId: number) {
+    const covidcats_contract = new ethers.Contract(contract.address, abi, library);
+    
+    // Get the Mint event by tokenId
+    const eventFilter = covidcats_contract.filters.Mint(null, _tokenId)
+    const event = await covidcats_contract.queryFilter(eventFilter);
+    
+    // Use ethers.js library to decode this Mint event
+    const iface = new ethers.utils.Interface(abi)
+    const data = event[0].data
+    const topics = event[0].topics
+    const decoded_event = iface.parseLog({ data, topics })
+
+    // Return NFT traits
+    const nft_traits = decoded_event.args[2]
+    return nft_traits;
+  }
   
-    try {
-      const signer = library.getSigner();
-      // const tx = await contract.connect(signer)._setTokenURI(tokenID, metadataLink);
-      const tx = await contract.connect(signer)._setTokenURI(tokenID, metadataLink);
-      await tx.wait();
-    } catch (err) {
-      console.log(err)
-    }
-  };
+  // const handleSetURI = async() => {
+
+  //   if (!active) {
+  //     setErrorMessage("Not connected to MetaMask");
+  //     setFailed(true);
+  //     return;
+  //   }
+  
+  //   try {
+  //     const signer = library.getSigner();
+  //     // const tx = await contract.connect(signer)._setTokenURI(tokenID, metadataLink);
+  //     const tx = await contract.connect(signer)._setTokenURI(tokenID, metadataLink);
+  //     await tx.wait();
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // };
 
   return (
     <Box id="mint">

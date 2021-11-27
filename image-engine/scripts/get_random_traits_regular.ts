@@ -1,5 +1,3 @@
-const ethers = require("ethers")
-
 const trait_0: string[] = [
     "face1"
 ]
