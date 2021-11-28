@@ -1,8 +1,10 @@
 import React, { ReactElement } from 'react'
 import { Container, VStack, Box, Heading, Text } from "@chakra-ui/react"
 import Mission from './Mission'
-import Mint from './Mint'
 import Mint2 from './Mint2'
+import MyCats from './MyCats'
+import Charities from './Charities'
+import Dao from './Dao'
 
 function Main(): ReactElement {
   return (
@@ -17,17 +19,15 @@ function Main(): ReactElement {
       <Box p={3} minH="200px" bg="yellow.100" border="2px">
         <Mission />
       </Box>
-      {/* <Box p={3} minH="200px" bg="pink.100" id="cats" border="2px">
-        <Heading as="h2" size="xl">My Cats</Heading>
-        <br/>
-        <Text>Integrated with the Chainlink VRF function to generate provably random traits</Text>
+      <Box p={3} minH="200px" bg="pink.100" id="cats" border="2px">
+        <MyCats/>
       </Box>
       <Box p={3} minH="200px" bg="green.100" id="charities" border="2px">
-        <Heading as="h2" size="xl">Charities</Heading>
+        <Charities />
       </Box>
       <Box p={3} minH="200px" bg="orange.100" id="dao" border="2px">
-        <Heading as="h2" size="xl">DAO</Heading>
-      </Box> */}
+        <Dao />
+      </Box>
     </VStack>
   )
 }
